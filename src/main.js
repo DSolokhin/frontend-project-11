@@ -1,10 +1,10 @@
 import './styles/main.css'
 import validateUrl from './validation.js'
 import createView from './view.js'
+import i18n from './i18n.js'
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   const form = document.getElementById('rss-form')
-  const input = document.getElementById('rss-url')
   
   const state = {
     form: {
@@ -14,7 +14,9 @@ document.addEventListener('DOMContentLoaded', () => {
     feeds: [],
   }
 
-  const watchedState = createView(state, form)
+  // Инициализация i18next
+  const i18nInstance = await i18n()
+  const watchedState = createView(state, form, i18nInstance)
 
   const handleFormSubmit = (event) => {
     event.preventDefault()
@@ -38,7 +40,8 @@ document.addEventListener('DOMContentLoaded', () => {
         watchedState.form.processState = 'finished'
       })
       .catch((error) => {
-        watchedState.form.error = error.message
+        const errorKey = error.message?.key || error.message
+        watchedState.form.error = { key: errorKey }
         watchedState.form.processState = 'error'
       })
   }

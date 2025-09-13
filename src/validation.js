@@ -1,10 +1,25 @@
 import * as yup from 'yup'
+import i18next from 'i18next'
+
+const setupYupLocale = () => {
+  yup.setLocale({
+    string: {
+      url: () => ({ key: 'errors.url' }),
+    },
+    mixed: {
+      required: () => ({ key: 'errors.required' }),
+      notOneOf: () => ({ key: 'errors.notOneOf' }),
+    },
+  })
+}
 
 const validateUrl = (url, feeds) => {
+  setupYupLocale()
+  
   const schema = yup.string()
-    .required('URL обязателен для заполнения')
-    .url('Ссылка должна быть валидным URL')
-    .notOneOf(feeds, 'RSS уже существует')
+    .required()
+    .url()
+    .notOneOf(feeds)
 
   return schema.validate(url)
 }
