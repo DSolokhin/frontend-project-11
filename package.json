@@ -1,0 +1,37 @@
+{
+  "name": "@hexlet/code",
+  "version": "1.0.0",
+  "description": "RSS Aggregator",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "npx eslint .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "eslint": "^8.57.1",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.32.0",
+    "vite": "^5.4.20"
+  },
+  "dependencies": {
+    "bootstrap": "^5.3.8"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DSolokhin/frontend-project-11.git"
+  },
+  "keywords": [
+    "rss",
+    "aggregator",
+    "hexlet"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DSolokhin/frontend-project-11/issues"
+  },
+  "homepage": "https://github.com/DSolokhin/frontend-project-11#readme"
+}
