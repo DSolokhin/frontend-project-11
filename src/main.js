@@ -1,4 +1,4 @@
-import './styles/main.scss'
+import './styles/main.css'
 
 document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('rss-form')
@@ -33,4 +33,3 @@ document.addEventListener('DOMContentLoaded', () => {
 
   form.addEventListener('submit', handleFormSubmit)
 })
-
