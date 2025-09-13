@@ -1,34 +1,46 @@
 import './styles/main.css'
+import validateUrl from './validation.js'
+import createView from './view.js'
 
 document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('rss-form')
-  const urlInput = document.getElementById('rss-url')
+  const input = document.getElementById('rss-url')
+  
+  const state = {
+    form: {
+      processState: 'filling',
+      error: null,
+    },
+    feeds: [],
+  }
+
+  const watchedState = createView(state, form)
 
   const handleFormSubmit = (event) => {
     event.preventDefault()
     
-    const url = urlInput.value.trim()
-    
-    if (!url) {
-      showError('Пожалуйста, введите URL RSS потока')
-      return
-    }
+    const formData = new FormData(event.target)
+    const url = formData.get('url').trim()
 
-    console.log('Добавляем RSS:', url)
-    urlInput.value = ''
-  }
+    // Сбрасываем ошибки
+    watchedState.form.error = null
+    watchedState.form.processState = 'validating'
 
-  const showError = (message) => {
-    const errorDiv = document.createElement('div')
-    errorDiv.className = 'alert alert-danger mt-3'
-    errorDiv.textContent = message
-    errorDiv.setAttribute('role', 'alert')
-    
-    form.parentNode.appendChild(errorDiv)
-    
-    setTimeout(() => {
-      errorDiv.remove()
-    }, 3000)
+    validateUrl(url, state.feeds)
+      .then((validUrl) => {
+        watchedState.form.processState = 'sending'
+        return Promise.resolve(validUrl)
+      })
+      .then((validUrl) => {
+        // Здесь будет логика добавления RSS
+        console.log('Добавляем RSS:', validUrl)
+        watchedState.feeds.push(validUrl)
+        watchedState.form.processState = 'finished'
+      })
+      .catch((error) => {
+        watchedState.form.error = error.message
+        watchedState.form.processState = 'error'
+      })
   }
 
   form.addEventListener('submit', handleFormSubmit)
