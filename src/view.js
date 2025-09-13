@@ -1,5 +1,4 @@
 import onChange from 'on-change'
-import i18next from 'i18next'
 
 const createView = (state, form, i18nInstance) => {
   const input = form.querySelector('#rss-url')
@@ -7,19 +6,15 @@ const createView = (state, form, i18nInstance) => {
   feedback.className = 'feedback'
   form.appendChild(feedback)
 
-  const renderHeader = () => {
+  const renderTexts = () => {
+    // Рендерим все тексты
     const header = document.querySelector('h1')
-    if (header) {
-      header.textContent = i18nInstance.t('header')
-    }
-  }
-
-  const renderFormLabels = () => {
     const title = form.querySelector('.card-title')
     const label = form.querySelector('.form-label')
     const button = form.querySelector('.btn')
     const placeholder = form.querySelector('#rss-url')
 
+    if (header) header.textContent = i18nInstance.t('header')
     if (title) title.textContent = i18nInstance.t('form.title')
     if (label) label.textContent = i18nInstance.t('form.label')
     if (button) button.textContent = i18nInstance.t('form.submit')
@@ -43,7 +38,6 @@ const createView = (state, form, i18nInstance) => {
       if (value === 'finished') {
         form.reset()
         input.focus()
-        // Показываем успешное сообщение на 3 секунды
         feedback.textContent = i18nInstance.t('form.success')
         feedback.className = 'feedback text-success mt-2'
         setTimeout(() => {
@@ -58,9 +52,8 @@ const createView = (state, form, i18nInstance) => {
     }
   })
 
-  // Первоначальный рендер текстов
-  renderHeader()
-  renderFormLabels()
+  // Рендерим тексты после создания watchedState
+  renderTexts()
 
   return watchedState
 }

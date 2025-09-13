@@ -1,7 +1,6 @@
 import * as yup from 'yup'
-import i18next from 'i18next'
 
-const setupYupLocale = () => {
+const setupYupLocale = (i18nInstance) => {
   yup.setLocale({
     string: {
       url: () => ({ key: 'errors.url' }),
@@ -13,8 +12,8 @@ const setupYupLocale = () => {
   })
 }
 
-const validateUrl = (url, feeds) => {
-  setupYupLocale()
+const validateUrl = (url, feeds, i18nInstance) => {
+  setupYupLocale(i18nInstance)
   
   const schema = yup.string()
     .required()

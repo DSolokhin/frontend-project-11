@@ -1,7 +1,7 @@
 import i18next from 'i18next'
 import ru from './locales/ru.js'
 
-const i18n = () => {
+const initI18n = () => {
   return i18next.init({
     lng: 'ru',
     debug: false,
@@ -11,4 +11,4 @@ const i18n = () => {
   })
 }
 
-export default i18n
+export default initI18n
