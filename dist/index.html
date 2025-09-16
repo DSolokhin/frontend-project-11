@@ -4,12 +4,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
     <title>RSS агрегатор</title>
-  <script type="module" crossorigin src="./assets/main-DBm5Kgvx.js"></script>
+  <script type="module" crossorigin src="./assets/main-BEKBkr8H.js"></script>
   <link rel="stylesheet" crossorigin href="./assets/main-DFHRhHuv.css">
 </head>
 <body class="d-flex flex-column min-vh-100">
-    <!-- Модальное окно -->
-    <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
+    <!-- Модальное окно ВНУТРИ HEADER -->
+    <header class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -18,19 +18,19 @@
                 </div>
                 <div class="modal-body text-break"></div>
                 <div class="modal-footer">
-                    <a class="btn btn-primary full-article" href="#" role="button" target="_blank" id="modal-read-all" rel="noopener noreferrer">Читать полностью</a>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="modal-close">Закрыть</button>
+                    <a class="btn btn-primary full-article" href="#" role="button" target="_blank" rel="noopener noreferrer">Читать полностью</a>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
                 </div>
             </div>
         </div>
-    </div>
+    </header>
 
     <main class="flex-grow-1">
         <!-- Форма добавления RSS -->
         <section class="container-fluid bg-dark p-5">
             <div class="row">
                 <div class="col-md-10 col-lg-8 mx-auto text-white">
-                    <h1 class="display-3 mb-0">RSS Агрегатор</h1>
+                    <h1 class="display-3 mb-0">RSS агрегатор</h1>
                     <p class="lead">Начните читать RSS сегодня! Это легко, это красиво.</p>
                     <form class="rss-form text-body">
                         <div class="row">
@@ -48,14 +48,14 @@
                             </div>
                         </div>
                     </form>
-                    <p class="mt-2 mb-0 text-muted">Пример: https://ru.hexlet.io/lessons.rss</p>
+                    <p class="mt-2 mb-0 text-secondary">Пример: https://lorem-rss.hexlet.app/feed</p>
                     <p class="feedback m-0 position-absolute small text-danger"></p>
                 </div>
             </div>
         </section>
 
         <!-- Контейнеры для постов и фидов -->
-        <section class="container-fluid container-xxl p-5">
+        <section class="container-fluid container-xxl p-5 d-none" id="content-section">
             <div class="row">
                 <div class="col-md-10 col-lg-8 order-1 mx-auto posts">
                     <h2>Посты</h2>
@@ -67,6 +67,7 @@
                 </div>
             </div>
         </section>
+
     </main>
 
     <footer class="footer border-top py-3 mt-5 bg-light">
