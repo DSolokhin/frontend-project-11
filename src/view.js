@@ -1,52 +1,62 @@
+// src/view.js
 import onChange from 'on-change'
 
-const createView = (state, form, i18nInstance) => {
-  const input = form.querySelector('#rss-url')
-  const feedback = document.createElement('div')
-  feedback.className = 'feedback'
-  form.appendChild(feedback)
-
-  const renderTexts = () => {
-    const header = document.querySelector('h1')
-    const title = form.querySelector('.card-title')
-    const label = form.querySelector('.form-label')
-    const button = form.querySelector('.btn')
-    const placeholder = form.querySelector('#rss-url')
-
-    if (header) header.textContent = i18nInstance.t('header')
-    if (title) title.textContent = i18nInstance.t('form.title')
-    if (label) label.textContent = i18nInstance.t('form.label')
-    if (button) button.textContent = i18nInstance.t('form.submit')
-    if (placeholder) placeholder.placeholder = i18nInstance.t('form.placeholder')
+const createView = (state) => {
+  const elements = {
+    form: document.querySelector('.rss-form'),
+    input: document.getElementById('url-input'),
+    feedback: document.querySelector('.feedback'), // Используем существующий элемент
+    submitButton: document.querySelector('[type="submit"]'),
+    contentSection: document.getElementById('content-section')
   }
 
-  const watchedState = onChange(state, (path, value) => {
-    if (path === 'form.error') {
-      if (value) {
-        input.classList.add('is-invalid')
-        feedback.textContent = i18nInstance.t(value.key || value)
-        feedback.className = 'feedback text-danger mt-2'
-      } else {
-        input.classList.remove('is-invalid')
-        feedback.textContent = ''
-        feedback.className = 'feedback'
-      }
-    }
+  console.log('Feedback element:', elements.feedback) // Проверка
 
-    if (path === 'form.processState' && value === 'finished') {
-      form.reset()
-      input.focus()
-      feedback.textContent = i18nInstance.t('form.success')
-      feedback.className = 'feedback text-success mt-2'
-      setTimeout(() => {
-        feedback.textContent = ''
-        feedback.className = 'feedback'
-      }, 3000)
+  const watchedState = onChange(state, (path, value) => {
+    console.log('State changed:', path, value)
+    
+    switch (path) {
+      case 'form.state':
+        if (value === 'sending') {
+          elements.submitButton.disabled = true
+          elements.input.readOnly = true
+        } else if (value === 'finished') {
+          elements.form.reset()
+          elements.input.focus()
+          elements.submitButton.disabled = false
+          elements.input.readOnly = false
+        } else {
+          elements.submitButton.disabled = false
+          elements.input.readOnly = false
+        }
+        break
+        
+      case 'form.error':
+        console.log('Error to display:', value)
+        if (value) {
+          elements.input.classList.add('is-invalid')
+          elements.feedback.textContent = value
+          elements.feedback.style.display = 'block'
+          elements.feedback.style.color = '#ff6b6b' // Яркий красный для темного фона
+        } else {
+          elements.input.classList.remove('is-invalid')
+          elements.feedback.textContent = ''
+          elements.feedback.style.display = 'none'
+        }
+        break
+        
+      case 'feeds':
+        if (value.length > 0 && elements.contentSection) {
+          elements.contentSection.classList.remove('d-none')
+        }
+        break
+        
+      default:
+        break
     }
   })
 
-  renderTexts()
-  return watchedState
+  return { elements, watchedState }
 }
 
 export default createView
