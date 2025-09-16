@@ -47,7 +47,7 @@ const createView = (state) => {
         if (value) {
           elements.input.classList.add('is-invalid')
           elements.feedback.textContent = value
-          elements.feedback.style.color = '#ff6b6b'
+          elements.feedback.style.color = '#e32633'
           elements.feedback.style.display = 'block'
         } else {
           elements.input.classList.remove('is-invalid')
