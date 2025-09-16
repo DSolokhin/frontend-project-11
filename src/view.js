@@ -7,7 +7,6 @@ const createView = (state, form, i18nInstance) => {
   form.appendChild(feedback)
 
   const renderTexts = () => {
-    // Рендерим все тексты
     const header = document.querySelector('h1')
     const title = form.querySelector('.card-title')
     const label = form.querySelector('.form-label')
@@ -34,27 +33,19 @@ const createView = (state, form, i18nInstance) => {
       }
     }
 
-    if (path === 'form.processState') {
-      if (value === 'finished') {
-        form.reset()
-        input.focus()
-        feedback.textContent = i18nInstance.t('form.success')
-        feedback.className = 'feedback text-success mt-2'
-        setTimeout(() => {
-          feedback.textContent = ''
-          feedback.className = 'feedback'
-        }, 3000)
-      }
-      
-      if (value === 'error') {
-        feedback.className = 'feedback text-danger mt-2'
-      }
+    if (path === 'form.processState' && value === 'finished') {
+      form.reset()
+      input.focus()
+      feedback.textContent = i18nInstance.t('form.success')
+      feedback.className = 'feedback text-success mt-2'
+      setTimeout(() => {
+        feedback.textContent = ''
+        feedback.className = 'feedback'
+      }, 3000)
     }
   })
 
-  // Рендерим тексты после создания watchedState
   renderTexts()
-
   return watchedState
 }
 

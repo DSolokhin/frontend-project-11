@@ -1,52 +1,81 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RSS Aggregator</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
-            background-color: #f8f9fa;
-            padding: 20px;
-        }
-        #app { min-height: 100vh; }
-        .card {
-            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
-            border: 1px solid rgba(0, 0, 0, 0.125);
-        }
-    </style>
-  <script type="module" crossorigin src="/assets/index-AJrig5ul.js"></script>
-  <link rel="stylesheet" crossorigin href="/assets/index-BRxH4jt1.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
+    <title>RSS агрегатор</title>
+  <script type="module" crossorigin src="./assets/main-DBm5Kgvx.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/main-DFHRhHuv.css">
 </head>
-<body>
-    <div id="app" class="container mt-4">
-        <h1 class="text-center mb-4">RSS агрегатор</h1>
-        
-        <div class="row justify-content-center">
-            <div class="col-md-6">
-                <form id="rss-form" class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Добавить RSS поток</h5>
-                        <div class="mb-3">
-                            <label for="rss-url" class="form-label">URL RSS потока</label>
-                            <input 
-                                type="text" 
-                                name="url"
-                                class="form-control" 
-                                id="rss-url" 
-                                placeholder="https://example.com/rss" 
-                                required
-                                autofocus
-                            >
-                        </div>
-                        <button type="submit" class="btn btn-primary">Добавить</button>
-                    </div>
-                </form>
+<body class="d-flex flex-column min-vh-100">
+    <!-- Модальное окно -->
+    <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"></h5>
+                    <button type="button" class="btn-close close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-break"></div>
+                <div class="modal-footer">
+                    <a class="btn btn-primary full-article" href="#" role="button" target="_blank" id="modal-read-all" rel="noopener noreferrer">Читать полностью</a>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="modal-close">Закрыть</button>
+                </div>
             </div>
         </div>
     </div>
+
+    <main class="flex-grow-1">
+        <!-- Форма добавления RSS -->
+        <section class="container-fluid bg-dark p-5">
+            <div class="row">
+                <div class="col-md-10 col-lg-8 mx-auto text-white">
+                    <h1 class="display-3 mb-0">RSS Агрегатор</h1>
+                    <p class="lead">Начните читать RSS сегодня! Это легко, это красиво.</p>
+                    <form class="rss-form text-body">
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-floating">
+                                    <input id="url-input" autofocus required name="url" aria-label="url" 
+                                           class="form-control w-100" placeholder="Ссылка RSS" autocomplete="off">
+                                    <label for="url-input">Ссылка RSS</label>
+                                </div>
+                            </div>
+                            <div class="col-auto">
+                                <button type="submit" aria-label="add" class="h-100 btn btn-lg btn-primary px-sm-5">
+                                    Добавить
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                    <p class="mt-2 mb-0 text-muted">Пример: https://ru.hexlet.io/lessons.rss</p>
+                    <p class="feedback m-0 position-absolute small text-danger"></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Контейнеры для постов и фидов -->
+        <section class="container-fluid container-xxl p-5">
+            <div class="row">
+                <div class="col-md-10 col-lg-8 order-1 mx-auto posts">
+                    <h2>Посты</h2>
+                    <div class="posts-container"></div>
+                </div>
+                <div class="col-md-10 col-lg-4 mx-auto order-0 order-lg-1 feeds">
+                    <h2>Фиды</h2>
+                    <div class="feeds-container"></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer border-top py-3 mt-5 bg-light">
+        <div class="container-xl">
+            <div class="text-center">
+                created by <a href="https://github.com/DSolokhin/frontend-project-11" target="_blank">Dmitry Solokhin</a>
+            </div>
+        </div>
+    </footer>
 
 </body>
 </html>

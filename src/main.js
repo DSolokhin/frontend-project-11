@@ -1,49 +1,44 @@
-import './styles/main.css'
-import validateUrl from './validation.js'
-import createView from './view.js'
-import initI18n from './i18n.js'
+// src/main.js
+import './styles.scss';
 
 document.addEventListener('DOMContentLoaded', () => {
-  const form = document.getElementById('rss-form')
-  
-  const state = {
-    form: {
-      processState: 'filling',
-      error: null,
-    },
-    feeds: [],
-  }
+    const form = document.querySelector('.rss-form');
+    const feedback = document.querySelector('.feedback');
+    
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const formData = new FormData(form);
+        const url = formData.get('url');
+        
+        // Базовая валидация
+        if (!isValidUrl(url)) {
+            showFeedback('Введите корректный URL', 'danger');
+            return;
+        }
+        
+        // Здесь будет логика добавления RSS
+        showFeedback('RSS успешно добавлен', 'success');
+        form.reset();
+    });
+});
 
-  // Инициализируем i18next и только потом создаем view
-  initI18n().then((i18nInstance) => {
-    const watchedState = createView(state, form, i18nInstance)
-
-    const handleFormSubmit = (event) => {
-      event.preventDefault()
-      
-      const formData = new FormData(event.target)
-      const url = formData.get('url').trim()
-
-      watchedState.form.error = null
-      watchedState.form.processState = 'validating'
-
-      validateUrl(url, state.feeds, i18nInstance)
-        .then((validUrl) => {
-          watchedState.form.processState = 'sending'
-          return Promise.resolve(validUrl)
-        })
-        .then((validUrl) => {
-          console.log('Добавляем RSS:', validUrl)
-          watchedState.feeds.push(validUrl)
-          watchedState.form.processState = 'finished'
-        })
-        .catch((error) => {
-          const errorKey = error.message?.key || error.message
-          watchedState.form.error = { key: errorKey }
-          watchedState.form.processState = 'error'
-        })
+function isValidUrl(string) {
+    try {
+        new URL(string);
+        return true;
+    } catch (_) {
+        return false;
     }
+}
 
-    form.addEventListener('submit', handleFormSubmit)
-  })
-})
+function showFeedback(message, type) {
+    const feedback = document.querySelector('.feedback');
+    feedback.textContent = message;
+    feedback.className = `feedback m-0 position-absolute small text-${type}`;
+    
+    // Автоматическое скрытие сообщения
+    setTimeout(() => {
+        feedback.textContent = '';
+        feedback.className = 'feedback m-0 position-absolute small';
+    }, 3000);
+}

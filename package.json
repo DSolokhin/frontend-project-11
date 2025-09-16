@@ -14,9 +14,11 @@
     "eslint": "^8.57.1",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.32.0",
+    "sass": "^1.92.1",
     "vite": "^5.4.20"
   },
   "dependencies": {
+    "axios": "^1.12.1",
     "bootstrap": "^5.3.8",
     "i18next": "^25.5.2",
     "on-change": "^5.0.1",
