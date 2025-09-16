@@ -1,14 +1,29 @@
+// src/i18n.js
 import i18next from 'i18next'
-import ru from './locales/ru.js'
+import LanguageDetector from 'i18next-browser-languagedetector'
 
-const initI18n = () => {
-  return i18next.init({
-    lng: 'ru',
-    debug: false,
+const i18n = i18next.createInstance()
+
+i18n
+  .use(LanguageDetector)
+  .init({
+    debug: true, // Включим дебаг для отладки
+    fallbackLng: 'ru',
     resources: {
-      ru,
-    },
+      ru: {
+        translation: {
+          // Сообщения об ошибках
+          errors: {
+            required: 'Не должно быть пустым',
+            url: 'Ссылка должна быть валидным URL',
+            notOneOf: 'RSS уже существует'
+          },
+          // Сообщения о состоянии
+          loading: 'Идет загрузка...',
+          success: 'RSS успешно загружен'
+        }
+      }
+    }
   })
-}
 
-export default initI18n
+export default i18n

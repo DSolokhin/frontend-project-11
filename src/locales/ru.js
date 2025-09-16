@@ -1,20 +1,31 @@
+// src/locales/ru.js
 export default {
   translation: {
-    header: 'RSS агрегатор',
-    form: {
-      title: 'Добавить RSS поток',
-      label: 'URL RSS потока',
-      placeholder: 'https://example.com/rss',
-      submit: 'Добавить',
-      success: 'RSS успешно добавлен',
-    },
+    // Общие элементы
+    mainTitle: 'RSS агрегатор',
+    mainLead: 'Начните читать RSS сегодня! Это легко, это красиво.',
+    formInputLabel: 'Ссылка RSS',
+    formSubmitButton: 'Добавить',
+    formExample: 'Пример: https://lorem-rss.hexlet.app/feed',
+    postsTitle: 'Посты',
+    feedsTitle: 'Фиды',
+    modalReadAll: 'Читать полностью',
+    modalClose: 'Закрыть',
+
+    // Сообщения об успехе
+    success: 'RSS успешно загружен',
+
+    // Сообщения об ошибках
     errors: {
       required: 'Не должно быть пустым',
       url: 'Ссылка должна быть валидным URL',
       notOneOf: 'RSS уже существует',
-      invalidRss: 'Ресурс не содержит валидный RSS',
       network: 'Ошибка сети',
-      unknown: 'Неизвестная ошибка',
+      parsing: 'Ресурс не содержит валидный RSS',
+      unknown: 'Неизвестная ошибка'
     },
-  },
+
+    // Состояния загрузки
+    loading: 'Идет загрузка...'
+  }
 }
