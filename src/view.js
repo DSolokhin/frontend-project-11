@@ -42,20 +42,20 @@ const createView = (state) => {
           
           return `
           <li class="list-group-item border-0 d-flex justify-content-between align-items-start">
-            <div class="me-auto">
-              <a href="${post.link}" target="_blank" rel="noopener noreferrer" 
-                 class="text-decoration-none ${fontWeightClass}">
-                ${post.title}
-              </a>
-            </div>
-            <button type="button" class="btn btn-outline-primary btn-sm ms-2 view-button" 
-                    data-post-id="${post.id}"
-                    data-post-title="${post.title}"
-                    data-post-description="${post.description}"
-                    data-post-link="${post.link}">
-              Просмотр
-            </button>
-          </li>
+          <div class="me-auto">
+            <a href="${post.link}" target="_blank" rel="noopener noreferrer" 
+               class="${fontWeightClass}"> <!-- Убрали text-decoration-none -->
+              ${post.title}
+            </a>
+          </div>
+          <button type="button" class="btn btn-outline-primary btn-sm ms-2 view-button" 
+                  data-post-id="${post.id}"
+                  data-post-title="${post.title}"
+                  data-post-description="${post.description}"
+                  data-post-link="${post.link}">
+            Просмотр
+          </button>
+        </li>
           `
         }).join('')}
       </ul>
