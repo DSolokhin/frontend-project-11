@@ -32,7 +32,7 @@ const app = () => {
       description: feedData.description,
     }
 
-    const posts = postsData.map((post) => ({
+    const posts = postsData.map(post => ({
       id: `${feedId}-${post.link}`,
       feedId,
       title: post.title,
@@ -52,20 +52,20 @@ const app = () => {
 
     watchedState.updateProcess.state = 'updating'
 
-    const updatePromises = watchedState.feeds.map((feed) =>
+    const updatePromises = watchedState.feeds.map(feed =>
       fetchRSS(feed.url)
         .then((xmlString) => {
           const { posts: newPosts } = parseRSS(xmlString)
           const existingPostLinks = watchedState.posts
-            .filter((post) => post.feedId === feed.id)
-            .map((post) => post.link)
+            .filter(post => post.feedId === feed.id)
+            .map(post => post.link)
 
-          const uniqueNewPosts = newPosts.filter((post) =>
+          const uniqueNewPosts = newPosts.filter(post =>
             !existingPostLinks.includes(post.link),
           )
 
           if (uniqueNewPosts.length > 0) {
-            const postsToAdd = uniqueNewPosts.map((post) => ({
+            const postsToAdd = uniqueNewPosts.map(post => ({
               id: `${feed.id}-${post.link}`,
               feedId: feed.id,
               title: post.title,
