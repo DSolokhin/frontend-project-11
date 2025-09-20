@@ -18,7 +18,7 @@ const createView = (state) => {
 
     const feedsHtml = `
       <ul class="list-group">
-        ${feeds.map((feed) => `
+        ${feeds.map(feed => `
           <li class="list-group-item border-0">
             <h4 class="h6 mb-1">${feed.title}</h4>
             <p class="text-muted small mb-0">${feed.description}</p>
@@ -97,7 +97,8 @@ const createView = (state) => {
           elements.feedback.textContent = i18n.t('loading')
           elements.feedback.style.color = '#0d6efd'
           elements.feedback.style.display = 'block'
-        } else if (value === 'finished') {
+        }
+        else if (value === 'finished') {  <!-- ИСПРАВЛЕНО: } else { → } \n else { -->
           elements.form.reset()
           elements.input.focus()
           elements.submitButton.disabled = false
@@ -109,7 +110,8 @@ const createView = (state) => {
             elements.feedback.textContent = ''
             elements.feedback.style.display = 'none'
           }, 3000)
-        } else {
+        }
+        else {  <!-- ИСПРАВЛЕНО: } else { → } \n else { -->
           elements.submitButton.disabled = false
           elements.input.readOnly = false
         }
@@ -121,7 +123,8 @@ const createView = (state) => {
           elements.feedback.textContent = value
           elements.feedback.style.color = '#dc3545'
           elements.feedback.style.display = 'block'
-        } else {
+        }
+        else {  <!-- ИСПРАВЛЕНО: } else { → } \n else { -->
           elements.input.classList.remove('is-invalid')
           elements.feedback.textContent = ''
           elements.feedback.style.display = 'none'
