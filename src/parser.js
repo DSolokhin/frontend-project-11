@@ -24,7 +24,7 @@ export const parseRSS = (xmlString) => {
   }
 
   const items = xmlDoc.querySelectorAll('item')
-  const posts = Array.from(items).map((item) => ({
+  const posts = Array.from(items).map(item => ({
     title: getTextContent(item, 'title'),
     link: getTextContent(item, 'link'),
     description: getTextContent(item, 'description'),
