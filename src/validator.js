@@ -2,7 +2,6 @@
 import * as yup from 'yup'
 import i18n from './i18n.js'
 
-// Настраиваем сообщения об ошибках для yup
 yup.setLocale({
   string: {
     url: () => i18n.t('errors.url'),

@@ -4,11 +4,10 @@ import 'bootstrap'
 import onChange from 'on-change'
 import validateUrl from './validator.js'
 import createView from './view.js'
-import i18n from './i18n.js'
+import { fetchRSS } from './api.js'
+import { parseRSS } from './parser.js'
 
 const app = () => {
-  console.log('App starting...')
-  
   const state = {
     form: {
       state: 'filling',
@@ -19,34 +18,56 @@ const app = () => {
   }
 
   const { elements, watchedState } = createView(state)
-  console.log('Watched state created:', watchedState)
+
+  const addFeed = (url, feedData, postsData) => {
+    const feedId = Date.now().toString()
+    
+    const feed = {
+      id: feedId,
+      url,
+      title: feedData.title,
+      description: feedData.description
+    }
+
+    const posts = postsData.map(post => ({
+      id: Date.now().toString() + Math.random().toString(),
+      feedId,
+      title: post.title,
+      link: post.link,
+      description: post.description
+    }))
+
+    watchedState.feeds.push(feed)
+    watchedState.posts = [...watchedState.posts, ...posts]
+  }
 
   elements.form.addEventListener('submit', async (e) => {
     e.preventDefault()
-    console.log('Form submitted')
     
     const formData = new FormData(elements.form)
     const url = formData.get('url').trim()
-    console.log('URL to validate:', url)
 
     watchedState.form.state = 'sending'
     watchedState.form.error = null
 
     try {
-      console.log('Validating URL...')
       await validateUrl(watchedState, url)
-      console.log('Validation passed')
       
-      watchedState.feeds.push({ 
-        url, 
-        title: 'Новый RSS', 
-        description: '' 
-      })
+      const xmlString = await fetchRSS(url)
+      const { feed, posts } = parseRSS(xmlString)
+      
+      addFeed(url, feed, posts)
       watchedState.form.state = 'finished'
       
     } catch (error) {
-      console.log('Validation error:', error.message)
-      watchedState.form.error = error.message
+      console.error('Error:', error)
+      const errorMessage = error.message === 'Ресурс не содержит валидный RSS' 
+        ? 'Ресурс не содержит валидный RSS'
+        : error.message === 'Ошибка сети'
+          ? 'Ошибка сети'
+          : error.message
+      
+      watchedState.form.error = errorMessage
       watchedState.form.state = 'filling'
     }
   })
@@ -58,5 +79,6 @@ const app = () => {
   })
 }
 
-// Запускаем сразу, без ожидания initialized
+export default app
+
 document.addEventListener('DOMContentLoaded', app)

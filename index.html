@@ -7,21 +7,24 @@
 </head>
 <body class="d-flex flex-column min-vh-100">
     <!-- Модальное окно ВНУТРИ HEADER -->
-    <header class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title"></h5>
-                    <button type="button" class="btn-close close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body text-break"></div>
-                <div class="modal-footer">
-                    <a class="btn btn-primary full-article" href="#" role="button" target="_blank" id="modal-read-all" rel="noopener noreferrer">Читать полностью</a>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="modal-close">Закрыть</button>
-                </div>
+    <!-- Модальное окно -->
+<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"></h5>
+                <button type="button" class="btn-close close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-break"></div>
+            <div class="modal-footer">
+                <a class="btn btn-primary full-article" href="#" role="button" target="_blank" rel="noopener noreferrer">
+                    Читать полностью
+                </a>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
             </div>
         </div>
-    </header>
+    </div>
+</div>
 
     <main class="flex-grow-1">
         <!-- Форма добавления RSS -->
@@ -54,11 +57,11 @@
         <!-- Контейнеры для постов и фидов -->
         <section class="container-fluid container-xxl p-5 d-none" id="content-section">
             <div class="row">
-                <div class="col-md-10 col-lg-8 order-1 mx-auto posts">
+                <div class="col-md-10 col-lg-8 order-1 mx-auto">
                     <h2>Посты</h2>
                     <div class="posts-container"></div>
                 </div>
-                <div class="col-md-10 col-lg-4 mx-auto order-0 order-lg-1 feeds">
+                <div class="col-md-10 col-lg-4 mx-auto order-0 order-lg-1">
                     <h2>Фиды</h2>
                     <div class="feeds-container"></div>
                 </div>
