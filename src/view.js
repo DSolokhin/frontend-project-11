@@ -35,7 +35,7 @@ const createView = (state) => {
 
     const postsHtml = `
       <ul class="list-group">
-        ${posts.map((post) => {
+        ${posts.map(post => {
           const isViewed = viewedPosts.has(post.id)
 
           return `
@@ -64,16 +64,13 @@ const createView = (state) => {
 
     elements.postsContainer.innerHTML = postsHtml
 
-    // Добавляем обработчики для обновления модального окна
     const viewButtons = elements.postsContainer.querySelectorAll('[data-bs-toggle="modal"]')
-    viewButtons.forEach((button) => {
+    viewButtons.forEach(button => {
       button.addEventListener('click', () => {
         const postId = button.getAttribute('data-post-id')
 
-        // Помечаем пост как прочитанный
         watchedState.viewedPosts.add(postId)
 
-        // Обновляем модальное окно
         const modalTitle = document.querySelector('.modal-title')
         const modalBody = document.querySelector('.modal-body')
         const modalLink = document.querySelector('.full-article')
@@ -82,7 +79,6 @@ const createView = (state) => {
         modalBody.textContent = button.getAttribute('data-post-description')
         modalLink.href = button.getAttribute('data-post-link')
 
-        // Перерисовываем посты чтобы обновить стили
         renderPosts(watchedState.posts, watchedState.viewedPosts)
       })
     })
@@ -109,8 +105,7 @@ const createView = (state) => {
             elements.feedback.textContent = ''
             elements.feedback.style.display = 'none'
           }, 3000)
-        }
-        else {
+        } else {
           elements.submitButton.disabled = false
           elements.input.readOnly = false
         }
@@ -122,8 +117,7 @@ const createView = (state) => {
           elements.feedback.textContent = value
           elements.feedback.style.color = '#dc3545'
           elements.feedback.style.display = 'block'
-        }
-        else {
+        } else {
           elements.input.classList.remove('is-invalid')
           elements.feedback.textContent = ''
           elements.feedback.style.display = 'none'
