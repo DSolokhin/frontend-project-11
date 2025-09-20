@@ -14,7 +14,10 @@ const app = () => {
       error: null
     },
     feeds: [],
-    posts: []
+    posts: [],
+    updateProcess: {
+      state: 'idle' // idle, updating
+    }
   }
 
   const { elements, watchedState } = createView(state)
@@ -30,7 +33,7 @@ const app = () => {
     }
 
     const posts = postsData.map(post => ({
-      id: Date.now().toString() + Math.random().toString(),
+      id: `${feedId}-${post.link}`,
       feedId,
       title: post.title,
       link: post.link,
@@ -39,6 +42,53 @@ const app = () => {
 
     watchedState.feeds.push(feed)
     watchedState.posts = [...watchedState.posts, ...posts]
+  }
+
+  const updateFeeds = () => {
+    if (watchedState.feeds.length === 0) {
+      setTimeout(updateFeeds, 5000)
+      return
+    }
+
+    watchedState.updateProcess.state = 'updating'
+    console.log('Checking for updates...')
+
+    const updatePromises = watchedState.feeds.map(feed => 
+      fetchRSS(feed.url)
+        .then(xmlString => {
+          const { posts: newPosts } = parseRSS(xmlString)
+          const existingPostLinks = watchedState.posts
+            .filter(post => post.feedId === feed.id)
+            .map(post => post.link)
+
+          const uniqueNewPosts = newPosts.filter(post => 
+            !existingPostLinks.includes(post.link)
+          )
+
+          if (uniqueNewPosts.length > 0) {
+            console.log(`Found ${uniqueNewPosts.length} new posts in ${feed.title}`)
+            
+            const postsToAdd = uniqueNewPosts.map(post => ({
+              id: `${feed.id}-${post.link}`,
+              feedId: feed.id,
+              title: post.title,
+              link: post.link,
+              description: post.description
+            }))
+
+            watchedState.posts = [...postsToAdd, ...watchedState.posts]
+          }
+        })
+        .catch(error => {
+          console.error(`Error updating feed ${feed.title}:`, error.message)
+        })
+    )
+
+    Promise.allSettled(updatePromises)
+      .then(() => {
+        watchedState.updateProcess.state = 'idle'
+        setTimeout(updateFeeds, 5000)
+      })
   }
 
   elements.form.addEventListener('submit', async (e) => {
@@ -59,6 +109,11 @@ const app = () => {
       addFeed(url, feed, posts)
       watchedState.form.state = 'finished'
       
+      // Запускаем обновления если это первый фид
+      if (watchedState.feeds.length === 1) {
+        setTimeout(updateFeeds, 5000)
+      }
+      
     } catch (error) {
       console.error('Error:', error)
       const errorMessage = error.message === 'Ресурс не содержит валидный RSS' 
@@ -77,6 +132,9 @@ const app = () => {
       watchedState.form.error = null
     }
   })
+
+  // Запускаем процесс обновлений
+  setTimeout(updateFeeds, 5000)
 }
 
 export default app
