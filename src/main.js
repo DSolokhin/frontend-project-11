@@ -107,7 +107,8 @@ const app = () => {
       if (watchedState.feeds.length === 1) {
         setTimeout(updateFeeds, 5000)
       }
-    } catch (error) {
+    }
+    catch (error) {
       console.error('Error:', error)
       const errorMessage = error.message === 'Ресурс не содержит валидный RSS'
         ? 'Ресурс не содержит валидный RSS'
