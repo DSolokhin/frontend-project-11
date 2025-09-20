@@ -52,18 +52,17 @@ const app = () => {
 
     watchedState.updateProcess.state = 'updating'
 
-    const updatePromises = watchedState.feeds.map((feed) =>
+    const updatePromises = watchedState.feeds.map(feed =>
       fetchRSS(feed.url)
-        .then((xmlString) => {
+        .then(xmlString => {
           const { posts: newPosts } = parseRSS(xmlString)
           const existingPostLinks = watchedState.posts
             .filter(post => post.feedId === feed.id)
             .map(post => post.link)
 
-    const uniqueNewPosts = newPosts.filter(post =>
-      !existingPostLinks.includes(post.link),
-    )
-
+          const uniqueNewPosts = newPosts.filter(post =>
+            !existingPostLinks.includes(post.link),
+          )
 
           if (uniqueNewPosts.length > 0) {
             const postsToAdd = uniqueNewPosts.map(post => ({
@@ -77,7 +76,7 @@ const app = () => {
             watchedState.posts = [...postsToAdd, ...watchedState.posts]
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.error(`Error updating feed ${feed.title}:`, error.message)
         }),
     )
@@ -89,7 +88,7 @@ const app = () => {
       })
   }
 
-  elements.form.addEventListener('submit', async (e) => {
+  elements.form.addEventListener('submit', async e => {
     e.preventDefault()
 
     const formData = new FormData(elements.form)
@@ -109,8 +108,7 @@ const app = () => {
       if (watchedState.feeds.length === 1) {
         setTimeout(updateFeeds, 5000)
       }
-    }
-    catch (error) {
+    } catch (error) {
       console.error('Error:', error)
       const errorMessage = error.message === 'Ресурс не содержит валидный RSS'
         ? 'Ресурс не содержит валидный RSS'
