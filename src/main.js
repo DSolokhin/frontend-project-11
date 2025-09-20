@@ -81,6 +81,7 @@ const app = () => {
           console.error(`Error updating feed ${feed.title}:`, error.message)
         })
     )
+
     Promise.allSettled(updatePromises)
       .then(() => {
         watchedState.updateProcess.state = 'idle'
@@ -109,7 +110,6 @@ const app = () => {
       if (watchedState.feeds.length === 1) {
         setTimeout(updateFeeds, 5000)
       }
-
     } catch (error) {
       console.error('Error:', error)
       const errorMessage = error.message === 'Ресурс не содержит валидный RSS'
