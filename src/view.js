@@ -1,7 +1,6 @@
 // src/view.js
 import onChange from 'on-change'
 import i18n from './i18n.js'
-import * as bootstrap from 'bootstrap'
 
 const createView = (state) => {
   const elements = {
@@ -40,22 +39,23 @@ const createView = (state) => {
           const isViewed = viewedPosts.has(post.id)
           
           return `
-          <li class="list-group-item border-0 d-flex justify-content-between align-items-start">
-            <div class="me-auto">
+          <li class="list-group-item border-0">
+            <div class="d-flex justify-content-between align-items-start">
               <a href="${post.link}" target="_blank" rel="noopener noreferrer" 
-                 ${isViewed ? '' : 'class="fw-bold"'}>
+                 ${isViewed ? '' : 'class="fw-bold"'}
+                 style="text-decoration: none;">
                 ${post.title}
               </a>
+              <button type="button" class="btn btn-outline-primary btn-sm ms-2" 
+                      data-bs-toggle="modal" 
+                      data-bs-target="#modal"
+                      data-post-id="${post.id}"
+                      data-post-title="${post.title}"
+                      data-post-description="${post.description}"
+                      data-post-link="${post.link}">
+                Просмотр
+              </button>
             </div>
-            <button type="button" class="btn btn-outline-primary btn-sm ms-2" 
-                    data-bs-toggle="modal" 
-                    data-bs-target="#modal"
-                    data-post-id="${post.id}"
-                    data-post-title="${post.title}"
-                    data-post-description="${post.description}"
-                    data-post-link="${post.link}">
-              Просмотр
-            </button>
           </li>
           `
         }).join('')}
