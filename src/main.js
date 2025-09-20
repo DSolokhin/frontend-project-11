@@ -53,9 +53,9 @@ const app = () => {
 
     watchedState.updateProcess.state = 'updating'
 
-    const updatePromises = watchedState.feeds.map(feed =>
+    const updatePromises = watchedState.feeds.map((feed) => // ← добавил скобки (arrow-parens)
       fetchRSS(feed.url)
-        .then(xmlString => {
+        .then((xmlString) => { // ← добавил скобки (arrow-parens)
           const { posts: newPosts } = parseRSS(xmlString)
           const existingPostLinks = watchedState.posts
             .filter(post => post.feedId === feed.id)
@@ -77,7 +77,7 @@ const app = () => {
             watchedState.posts = [...postsToAdd, ...watchedState.posts]
           }
         })
-        .catch(error => {
+        .catch((error) => { // ← добавил скобки (arrow-parens)
           console.error(`Error updating feed ${feed.title}:`, error.message)
         })
     )
@@ -110,7 +110,8 @@ const app = () => {
       if (watchedState.feeds.length === 1) {
         setTimeout(updateFeeds, 5000)
       }
-    } catch (error) {
+    } // ← вот здесь линтер хочет перенос перед catch
+    catch (error) { // ← перенесли catch на новую строку (brace-style)
       console.error('Error:', error)
       const errorMessage = error.message === 'Ресурс не содержит валидный RSS'
         ? 'Ресурс не содержит валидный RSS'
