@@ -32,7 +32,7 @@ const app = () => {
       description: feedData.description,
     }
 
-    const posts = postsData.map(post => ({
+    const posts = postsData.map((post) => ({
       id: `${feedId}-${post.link}`,
       feedId,
       title: post.title,
@@ -52,20 +52,20 @@ const app = () => {
 
     watchedState.updateProcess.state = 'updating'
 
-    const updatePromises = watchedState.feeds.map(feed =>
+    const updatePromises = watchedState.feeds.map((feed) =>
       fetchRSS(feed.url)
-        .then(xmlString => {
+        .then((xmlString) => {
           const { posts: newPosts } = parseRSS(xmlString)
           const existingPostLinks = watchedState.posts
-            .filter(post => post.feedId === feed.id)
-            .map(post => post.link)
+            .filter((post) => post.feedId === feed.id)
+            .map((post) => post.link)
 
-          const uniqueNewPosts = newPosts.filter(post =>
+          const uniqueNewPosts = newPosts.filter((post) =>
             !existingPostLinks.includes(post.link),
           )
 
           if (uniqueNewPosts.length > 0) {
-            const postsToAdd = uniqueNewPosts.map(post => ({
+            const postsToAdd = uniqueNewPosts.map((post) => ({
               id: `${feed.id}-${post.link}`,
               feedId: feed.id,
               title: post.title,
@@ -76,19 +76,18 @@ const app = () => {
             watchedState.posts = [...postsToAdd, ...watchedState.posts]
           }
         })
-        .catch(error => {
+        .catch((error) => {
           console.error(`Error updating feed ${feed.title}:`, error.message)
         }),
     )
 
-    Promise.allSettled(updatePromises)
-      .then(() => {
-        watchedState.updateProcess.state = 'idle'
-        setTimeout(updateFeeds, 5000)
-      })
+    Promise.allSettled(updatePromises).then(() => {
+      watchedState.updateProcess.state = 'idle'
+      setTimeout(updateFeeds, 5000)
+    })
   }
 
-  elements.form.addEventListener('submit', async e => {
+  elements.form.addEventListener('submit', async (e) => {
     e.preventDefault()
 
     const formData = new FormData(elements.form)
