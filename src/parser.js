@@ -2,7 +2,7 @@
 export const parseRSS = (xmlString) => {
   const parser = new DOMParser()
   const xmlDoc = parser.parseFromString(xmlString, 'text/xml')
-  
+
   const parseError = xmlDoc.querySelector('parsererror')
   if (parseError) {
     throw new Error('Ресурс не содержит валидный RSS')
