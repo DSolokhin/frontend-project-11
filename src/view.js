@@ -10,7 +10,7 @@ const createView = (state) => {
     submitButton: document.querySelector('[type="submit"]'),
     contentSection: document.getElementById('content-section'),
     feedsContainer: document.querySelector('.feeds-container'),
-    postsContainer: document.querySelector('.posts-container')
+    postsContainer: document.querySelector('.posts-container'),
   }
 
   const renderFeeds = (feeds) => {
@@ -18,7 +18,7 @@ const createView = (state) => {
 
     const feedsHtml = `
       <ul class="list-group">
-        ${feeds.map(feed => `
+        ${feeds.map((feed) => `
           <li class="list-group-item border-0">
             <h4 class="h6 mb-1">${feed.title}</h4>
             <p class="text-muted small mb-0">${feed.description}</p>
@@ -35,7 +35,7 @@ const createView = (state) => {
 
     const postsHtml = `
       <ul class="list-group">
-        ${posts.map(post => {
+        ${posts.map((post) => {
           const isViewed = viewedPosts.has(post.id)
           
           return `
@@ -64,16 +64,13 @@ const createView = (state) => {
     
     elements.postsContainer.innerHTML = postsHtml
 
-    // Добавляем обработчики для обновления модального окна
     const viewButtons = elements.postsContainer.querySelectorAll('[data-bs-toggle="modal"]')
-    viewButtons.forEach(button => {
+    viewButtons.forEach((button) => {
       button.addEventListener('click', () => {
         const postId = button.getAttribute('data-post-id')
         
-        // Помечаем пост как прочитанный
         watchedState.viewedPosts.add(postId)
         
-        // Обновляем модальное окно
         const modalTitle = document.querySelector('.modal-title')
         const modalBody = document.querySelector('.modal-body')
         const modalLink = document.querySelector('.full-article')
@@ -82,7 +79,6 @@ const createView = (state) => {
         modalBody.textContent = button.getAttribute('data-post-description')
         modalLink.href = button.getAttribute('data-post-link')
         
-        // Перерисовываем посты чтобы обновить стили
         renderPosts(watchedState.posts, watchedState.viewedPosts)
       })
     })
