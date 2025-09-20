@@ -15,8 +15,9 @@ const app = () => {
     },
     feeds: [],
     posts: [],
+    viewedPosts: new Set(), // Добавляем Set для прочитанных постов
     updateProcess: {
-      state: 'idle' // idle, updating
+      state: 'idle'
     }
   }
 
@@ -44,6 +45,7 @@ const app = () => {
     watchedState.posts = [...watchedState.posts, ...posts]
   }
 
+  // Функция автообновления
   const updateFeeds = () => {
     if (watchedState.feeds.length === 0) {
       setTimeout(updateFeeds, 5000)
@@ -51,7 +53,6 @@ const app = () => {
     }
 
     watchedState.updateProcess.state = 'updating'
-    console.log('Checking for updates...')
 
     const updatePromises = watchedState.feeds.map(feed => 
       fetchRSS(feed.url)
@@ -66,8 +67,6 @@ const app = () => {
           )
 
           if (uniqueNewPosts.length > 0) {
-            console.log(`Found ${uniqueNewPosts.length} new posts in ${feed.title}`)
-            
             const postsToAdd = uniqueNewPosts.map(post => ({
               id: `${feed.id}-${post.link}`,
               feedId: feed.id,
@@ -109,7 +108,7 @@ const app = () => {
       addFeed(url, feed, posts)
       watchedState.form.state = 'finished'
       
-      // Запускаем обновления если это первый фид
+      // Запускаем автообновление при добавлении первого фида
       if (watchedState.feeds.length === 1) {
         setTimeout(updateFeeds, 5000)
       }
@@ -133,7 +132,7 @@ const app = () => {
     }
   })
 
-  // Запускаем процесс обновлений
+  // Запускаем автообновление
   setTimeout(updateFeeds, 5000)
 }
 

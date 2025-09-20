@@ -1,6 +1,7 @@
 // src/view.js
 import onChange from 'on-change'
 import i18n from './i18n.js'
+import * as bootstrap from 'bootstrap' // Правильный импорт Bootstrap
 
 const createView = (state) => {
   const elements = {
@@ -19,7 +20,7 @@ const createView = (state) => {
     const feedsHtml = `
       <ul class="list-group">
         ${feeds.map(feed => `
-          <li class="list-group-item border-0"> <!-- Убрали рамку -->
+          <li class="list-group-item border-0">
             <h4 class="h6 mb-1">${feed.title}</h4>
             <p class="text-muted small mb-0">${feed.description}</p>
           </li>
@@ -30,42 +31,53 @@ const createView = (state) => {
     elements.feedsContainer.innerHTML = feedsHtml
   }
 
-  const renderPosts = (posts) => {
+  const renderPosts = (posts, viewedPosts) => {
     if (posts.length === 0) return
 
     const postsHtml = `
       <ul class="list-group">
-        ${posts.map(post => `
-          <li class="list-group-item border-0 d-flex justify-content-between align-items-start"> <!-- Убрали рамку -->
+        ${posts.map(post => {
+          const isViewed = viewedPosts.has(post.id)
+          const fontWeightClass = isViewed ? 'fw-normal' : 'fw-bold'
+          
+          return `
+          <li class="list-group-item border-0 d-flex justify-content-between align-items-start">
             <div class="me-auto">
               <a href="${post.link}" target="_blank" rel="noopener noreferrer" 
-                 class="text-decoration-none fw-bold">
+                 class="text-decoration-none ${fontWeightClass}">
                 ${post.title}
               </a>
-              ${post.description ? `<p class="text-muted small mb-0 mt-1">${post.description}</p>` : ''}
             </div>
-            <button type="button" class="btn btn-outline-primary btn-sm ms-2" 
-                    data-bs-toggle="modal" data-bs-target="#modal"
+            <button type="button" class="btn btn-outline-primary btn-sm ms-2 view-button" 
+                    data-post-id="${post.id}"
                     data-post-title="${post.title}"
                     data-post-description="${post.description}"
                     data-post-link="${post.link}">
               Просмотр
             </button>
           </li>
-        `).join('')}
+          `
+        }).join('')}
       </ul>
     `
     
     elements.postsContainer.innerHTML = postsHtml
 
     // Добавляем обработчики для кнопок просмотра
-    const viewButtons = elements.postsContainer.querySelectorAll('[data-bs-toggle="modal"]')
+    const viewButtons = elements.postsContainer.querySelectorAll('.view-button')
     viewButtons.forEach(button => {
-      button.addEventListener('click', () => {
+      button.addEventListener('click', (event) => {
+        event.preventDefault()
+        
+        const postId = button.getAttribute('data-post-id')
         const title = button.getAttribute('data-post-title')
         const description = button.getAttribute('data-post-description')
         const link = button.getAttribute('data-post-link')
         
+        // Помечаем пост как прочитанный
+        watchedState.viewedPosts.add(postId)
+        
+        // Обновляем модальное окно
         const modalTitle = document.querySelector('.modal-title')
         const modalBody = document.querySelector('.modal-body')
         const modalLink = document.querySelector('.full-article')
@@ -73,6 +85,14 @@ const createView = (state) => {
         modalTitle.textContent = title
         modalBody.textContent = description
         modalLink.href = link
+        
+        // Показываем модальное окно через Bootstrap
+        const modalElement = document.getElementById('modal')
+        const modal = bootstrap.Modal.getInstance(modalElement) || new bootstrap.Modal(modalElement)
+        modal.show()
+        
+        // Перерисовываем посты чтобы обновить стили
+        renderPosts(watchedState.posts, watchedState.viewedPosts)
       })
     })
   }
@@ -125,7 +145,11 @@ const createView = (state) => {
         break
         
       case 'posts':
-        renderPosts(value)
+        renderPosts(value, watchedState.viewedPosts)
+        break
+        
+      case 'viewedPosts':
+        renderPosts(watchedState.posts, watchedState.viewedPosts)
         break
         
       default:
