@@ -53,7 +53,7 @@ const app = () => {
 
     watchedState.updateProcess.state = 'updating'
 
-    const updatePromises = watchedState.feeds.map((feed) =>
+    const updatePromises = watchedState.feeds.map(feed =>
       fetchRSS(feed.url)
         .then(xmlString => {
           const { posts: newPosts } = parseRSS(xmlString)
@@ -62,7 +62,7 @@ const app = () => {
             .map(post => post.link)
 
           const uniqueNewPosts = newPosts.filter(post =>
-            !existingPostLinks.includes(post.link),
+            !existingPostLinks.includes(post.link)
           )
 
           if (uniqueNewPosts.length > 0) {
@@ -110,9 +110,7 @@ const app = () => {
         setTimeout(updateFeeds, 5000)
       }
 
-    } 
-      
-      catch (error) {
+    } catch (error) {
       console.error('Error:', error)
       const errorMessage = error.message === 'Ресурс не содержит валидный RSS'
         ? 'Ресурс не содержит валидный RSS'
