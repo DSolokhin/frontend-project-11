@@ -35,10 +35,9 @@ export const normalizeFeeds = (feeds) => {
 
 // Денормализация для рендеринга
 export const denormalizePosts = (postsState) => {
-  return postsState.ids.map((id) => postsState.entities[id])
+  return postsState.ids.map(id => postsState.entities[id])
 }
 
 export const denormalizeFeeds = (feedsState) => {
-  return feedsState.ids.map((id) => feedsState.entities[id])
+  return feedsState.ids.map(id => feedsState.entities[id])
 }
-

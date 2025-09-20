@@ -13,7 +13,7 @@ yup.setLocale({
 })
 
 export default (state, url) => {
-  const urlLists = state.feeds.map((feed) => feed.url)
+  const urlLists = state.feeds.map(feed => feed.url)
   const schema = yup
     .string()
     .url()
