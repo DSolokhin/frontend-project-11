@@ -97,8 +97,7 @@ const createView = (state) => {
           elements.feedback.textContent = i18n.t('loading')
           elements.feedback.style.color = '#0d6efd'
           elements.feedback.style.display = 'block'
-        }
-        else if (value === 'finished') {  <!-- ИСПРАВЛЕНО: } else { → } \n else { -->
+        } else if (value === 'finished') {
           elements.form.reset()
           elements.input.focus()
           elements.submitButton.disabled = false
@@ -111,7 +110,7 @@ const createView = (state) => {
             elements.feedback.style.display = 'none'
           }, 3000)
         }
-        else {  <!-- ИСПРАВЛЕНО: } else { → } \n else { -->
+        else {
           elements.submitButton.disabled = false
           elements.input.readOnly = false
         }
@@ -124,7 +123,7 @@ const createView = (state) => {
           elements.feedback.style.color = '#dc3545'
           elements.feedback.style.display = 'block'
         }
-        else {  <!-- ИСПРАВЛЕНО: } else { → } \n else { -->
+        else {
           elements.input.classList.remove('is-invalid')
           elements.feedback.textContent = ''
           elements.feedback.style.display = 'none'
