@@ -66,7 +66,7 @@ const app = () => {
           )
 
           if (uniqueNewPosts.length > 0) {
-            const postsToAdd = uniqueNewPosts.map((post) => ({
+            const postsToAdd = uniqueNewPosts.map(post => ({
               id: `${feed.id}-${post.link}`,
               feedId: feed.id,
               title: post.title,
@@ -77,7 +77,7 @@ const app = () => {
             watchedState.posts = [...postsToAdd, ...watchedState.posts]
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.error(`Error updating feed ${feed.title}:`, error.message)
         })
     )
