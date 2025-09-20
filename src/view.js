@@ -1,7 +1,7 @@
 // src/view.js
 import onChange from 'on-change'
 import i18n from './i18n.js'
-import * as bootstrap from 'bootstrap' // Правильный импорт Bootstrap
+import * as bootstrap from 'bootstrap'
 
 const createView = (state) => {
   const elements = {
@@ -38,24 +38,25 @@ const createView = (state) => {
       <ul class="list-group">
         ${posts.map(post => {
           const isViewed = viewedPosts.has(post.id)
-          const fontWeightClass = isViewed ? 'fw-normal' : 'fw-bold'
           
           return `
           <li class="list-group-item border-0 d-flex justify-content-between align-items-start">
-          <div class="me-auto">
-            <a href="${post.link}" target="_blank" rel="noopener noreferrer" 
-               class="${fontWeightClass}"> <!-- Убрали text-decoration-none -->
-              ${post.title}
-            </a>
-          </div>
-          <button type="button" class="btn btn-outline-primary btn-sm ms-2 view-button" 
-                  data-post-id="${post.id}"
-                  data-post-title="${post.title}"
-                  data-post-description="${post.description}"
-                  data-post-link="${post.link}">
-            Просмотр
-          </button>
-        </li>
+            <div class="me-auto">
+              <a href="${post.link}" target="_blank" rel="noopener noreferrer" 
+                 ${isViewed ? '' : 'class="fw-bold"'}>
+                ${post.title}
+              </a>
+            </div>
+            <button type="button" class="btn btn-outline-primary btn-sm ms-2" 
+                    data-bs-toggle="modal" 
+                    data-bs-target="#modal"
+                    data-post-id="${post.id}"
+                    data-post-title="${post.title}"
+                    data-post-description="${post.description}"
+                    data-post-link="${post.link}">
+              Просмотр
+            </button>
+          </li>
           `
         }).join('')}
       </ul>
@@ -63,16 +64,11 @@ const createView = (state) => {
     
     elements.postsContainer.innerHTML = postsHtml
 
-    // Добавляем обработчики для кнопок просмотра
-    const viewButtons = elements.postsContainer.querySelectorAll('.view-button')
+    // Добавляем обработчики для обновления модального окна
+    const viewButtons = elements.postsContainer.querySelectorAll('[data-bs-toggle="modal"]')
     viewButtons.forEach(button => {
-      button.addEventListener('click', (event) => {
-        event.preventDefault()
-        
+      button.addEventListener('click', () => {
         const postId = button.getAttribute('data-post-id')
-        const title = button.getAttribute('data-post-title')
-        const description = button.getAttribute('data-post-description')
-        const link = button.getAttribute('data-post-link')
         
         // Помечаем пост как прочитанный
         watchedState.viewedPosts.add(postId)
@@ -82,14 +78,9 @@ const createView = (state) => {
         const modalBody = document.querySelector('.modal-body')
         const modalLink = document.querySelector('.full-article')
         
-        modalTitle.textContent = title
-        modalBody.textContent = description
-        modalLink.href = link
-        
-        // Показываем модальное окно через Bootstrap
-        const modalElement = document.getElementById('modal')
-        const modal = bootstrap.Modal.getInstance(modalElement) || new bootstrap.Modal(modalElement)
-        modal.show()
+        modalTitle.textContent = button.getAttribute('data-post-title')
+        modalBody.textContent = button.getAttribute('data-post-description')
+        modalLink.href = button.getAttribute('data-post-link')
         
         // Перерисовываем посты чтобы обновить стили
         renderPosts(watchedState.posts, watchedState.viewedPosts)
