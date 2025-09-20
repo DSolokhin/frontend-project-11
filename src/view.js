@@ -44,11 +44,11 @@ const createView = (state) => {
           <li class="list-group-item border-0 d-flex justify-content-between align-items-start">
           <div class="me-auto">
             <a href="${post.link}" target="_blank" rel="noopener noreferrer" 
-               ${isViewed ? '' : 'class="fw-bold"'}>
+               class="${fontWeightClass}"> <!-- Убрали text-decoration-none -->
               ${post.title}
             </a>
           </div>
-          <button type="button" class="btn btn-outline-primary btn-sm ms-2" 
+          <button type="button" class="btn btn-outline-primary btn-sm ms-2 view-button" 
                   data-post-id="${post.id}"
                   data-post-title="${post.title}"
                   data-post-description="${post.description}"
