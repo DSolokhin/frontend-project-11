@@ -20,7 +20,7 @@ const createView = (state) => {
 
     const feedsHtml = `
       <ul class="list-group">
-        ${feeds.map((feed) => `
+        ${feeds.map(feed => `
           <li class="list-group-item border-0">
             <h4 class="h6 mb-1">${feed.title}</h4>
             <p class="text-muted small mb-0">${feed.description}</p>
