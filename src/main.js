@@ -53,7 +53,7 @@ const app = () => {
 
     watchedState.updateProcess.state = 'updating'
 
-    const updatePromises = watchedState.feeds.map(feed =>
+    const updatePromises = watchedState.feeds.map((feed) =>
       fetchRSS(feed.url)
         .then(xmlString => {
           const { posts: newPosts } = parseRSS(xmlString)
@@ -79,9 +79,8 @@ const app = () => {
         })
         .catch((error) => {
           console.error(`Error updating feed ${feed.title}:`, error.message)
-        }),
+        })
     )
-
     Promise.allSettled(updatePromises)
       .then(() => {
         watchedState.updateProcess.state = 'idle'
